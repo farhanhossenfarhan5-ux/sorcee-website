@@ -1,0 +1,45 @@
+name: SORCEE Daily Agent
+
+on:
+  schedule:
+    - cron: "0 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run SORCEE agent
+        working-directory: sorcee-agent
+        env:
+          DRY_RUN: ${{ vars.SORCEE_DRY_RUN || 'true' }}
+          META_PAGE_ID: ${{ secrets.META_PAGE_ID }}
+          META_PAGE_ACCESS_TOKEN: ${{ secrets.META_PAGE_ACCESS_TOKEN }}
+          INSTAGRAM_BUSINESS_ACCOUNT_ID: ${{ secrets.INSTAGRAM_BUSINESS_ACCOUNT_ID }}
+          INSTAGRAM_IMAGE_URL: ${{ secrets.INSTAGRAM_IMAGE_URL }}
+          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_FROM: ${{ secrets.SMTP_FROM }}
+          LEADS_CSV: ${{ secrets.LEADS_CSV }}
+        run: python agent.py
+      - name: Commit daily drafts and report
+        run: |
+          git config user.name "sorcee-agent"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sorcee-agent/output
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: add SORCEE daily agent report"
+            git push
+          fi
