@@ -16,14 +16,14 @@ POSTS = [
 
 Looking for a reliable sourcing partner for your next apparel order? We coordinate production to your requirements, with a minimum order quantity of 50 pieces.
 
-Tell us what you need: https://sorcee.com/
+Tell us what you need: https://farhanhossenfarhan5-ux.github.io/sorcee-website/
 
 #SORCEE #ApparelSourcing #MadeInBangladesh #B2B""",
 """Your apparel idea deserves a dependable production partner.
 
 SORCEE helps international buyers coordinate apparel production with local factories in Bangladesh. Share your product, specifications and quantity (MOQ: 50 pieces).
 
-Start here: https://sorcee.com/request-a-quote.html
+Start here: https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html
 
 #SORCEE #GarmentSourcing #Bangladesh"""
 ]
@@ -91,7 +91,7 @@ def send_approved_emails():
         body = (f"Hello {row.get('name','there') or 'there'},\n\n"
                 "I’m reaching out from SORCEE. We coordinate apparel production with "
                 "manufacturing partners in Bangladesh for international buyers. Our MOQ is 50 pieces.\n\n"
-                "If this is relevant to your business, you can learn more at https://sorcee.com/ "
+                "If this is relevant to your business, you can learn more at https://farhanhossenfarhan5-ux.github.io/sorcee-website/ "
                 "or reply to this email. If you prefer not to receive further messages, reply "
                 "with 'unsubscribe'.\n\nSORCEE Team")
         if DRY_RUN:
