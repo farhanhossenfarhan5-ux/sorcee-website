@@ -142,14 +142,37 @@ def generate_ai_post():
             return generated, 'Gemini generated content using ' + GEMINI_MODEL
         except Exception as exc:
             last_error = exc
-            print('Gemini attempt ' + str(attempt) + ' failed: ' + type(exc).__name__)
+            if isinstance(exc, urllib.error.HTTPError):
+                # Record safe diagnostic details without logging the API key or request URL.
+                try:
+                    error_body = exc.read(1000).decode('utf-8', errors='replace')
+                    error_json = json.loads(error_body) if error_body else {}
+                    error_message = error_json.get('error', {}).get('message', '')
+                except Exception:
+                    error_message = ''
+                safe_message = ' — ' + error_message[:240] if error_message else ''
+                print('Gemini attempt ' + str(attempt) + ' failed: HTTP ' +
+                      str(exc.code) + safe_message)
+            else:
+                print('Gemini attempt ' + str(attempt) + ' failed: ' + type(exc).__name__)
             # Do not retry permanent API/authentication errors.
             if isinstance(exc, urllib.error.HTTPError) and exc.code not in (408, 429, 500, 502, 503, 504):
                 break
             if attempt < 3:
                 time.sleep(5 * attempt)
-    print('Gemini generation failed; using reviewed fallback templates: ' + str(last_error))
-    return None, 'fallback: Gemini request failed (' + type(last_error).__name__ + ')'
+    if isinstance(last_error, urllib.error.HTTPError):
+        try:
+            error_body = last_error.read(1000).decode('utf-8', errors='replace')
+            error_json = json.loads(error_body) if error_body else {}
+            error_message = error_json.get('error', {}).get('message', '')
+        except Exception:
+            error_message = ''
+        safe_message = ' — ' + error_message[:240] if error_message else ''
+        detail = 'HTTP ' + str(last_error.code) + safe_message
+    else:
+        detail = type(last_error).__name__ if last_error else 'unknown error'
+    print('Gemini generation failed; using reviewed fallback templates: ' + detail)
+    return None, 'fallback: Gemini request failed (' + detail + ')'
 
 def main():
     post, ai_status = generate_ai_post()
