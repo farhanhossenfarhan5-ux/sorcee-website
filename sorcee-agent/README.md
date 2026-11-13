@@ -7,7 +7,7 @@ This agent runs separately from the SORCEE static website. It does not edit webs
 - Facebook and Instagram publishing require Meta API credentials and approved permissions.
 - Email is limited to explicitly approved leads (maximum 3 per run by default). Never add purchased, scraped, or unconsented lists. Honour opt-outs.
 - LinkedIn output is a draft only. It does not scrape LinkedIn or automate connection requests.
-- Optional Gemini API support generates a daily caption. If GEMINI_API_KEY is absent or the request fails, reviewed templates are used. The default model is configurable with GEMINI_MODEL.
+- Optional Gemini API support generates a daily caption. If GEMINI_API_KEY is absent or the request fails, reviewed templates are used. The primary model is configurable with GEMINI_MODEL (default: gemini-3.8-flash). If it fails, the agent tries GEMINI_BACKUP_MODEL (default: gemini-3.5-flash-lite) before using a reviewed fallback caption.
 
 ## GitHub Actions
 The workflow runs daily at 03:00 UTC (09:00 Bangladesh time) and can also be started manually.
