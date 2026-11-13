@@ -7,13 +7,14 @@ This agent runs separately from the SORCEE static website. It does not edit webs
 - Facebook and Instagram publishing require Meta API credentials and approved permissions.
 - Email is limited to explicitly approved leads (maximum 3 per run by default). Never add purchased, scraped, or unconsented lists. Honour opt-outs.
 - LinkedIn output is a draft only. It does not scrape LinkedIn or automate connection requests.
-- No AI provider key is required for this first MVP; it creates a simple daily post from reviewed templates.
+- Optional Gemini API support generates a daily caption. If GEMINI_API_KEY is absent or the request fails, reviewed templates are used. The default model is configurable with GEMINI_MODEL.
 
 ## GitHub Actions
 The workflow runs daily at 03:00 UTC (09:00 Bangladesh time) and can also be started manually.
 It writes reports and draft content to this folder.
 
 ## Optional GitHub Actions secrets
+- GEMINI_API_KEY — Google AI Studio API key for Gemini content generation. Keep it in GitHub Secrets; never commit it or share it in chat. Free-tier availability and quotas depend on the selected model and Google account/project. Google states that free-tier content may be used to improve its products, so do not send confidential customer or supplier information.
 Add these under Repository → Settings → Secrets and variables → Actions:
 - `META_PAGE_ID`, `META_PAGE_ACCESS_TOKEN` — Facebook Page publishing.
 - `INSTAGRAM_BUSINESS_ACCOUNT_ID`, `INSTAGRAM_IMAGE_URL` — Instagram professional account and a publicly accessible image URL.
