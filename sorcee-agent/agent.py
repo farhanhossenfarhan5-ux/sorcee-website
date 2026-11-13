@@ -113,6 +113,7 @@ def send_approved_emails():
 def generate_ai_post():
     if not GEMINI_API_KEY:
         return None, 'fallback: GEMINI_API_KEY not configured'
+
     prompt = (
         'Write one polished English social-media caption for SORCEE, a Bangladesh-based '
         'B2B apparel sourcing coordinator connecting global brands with local factories. '
@@ -123,43 +124,53 @@ def generate_ai_post():
         'https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html '
         'and 3-5 relevant hashtags. Return only the caption.'
     )
-    url = ('https://generativelanguage.googleapis.com/v1beta/models/' +
-           urllib.parse.quote(GEMINI_MODEL, safe='') + ':generateContent?key=' +
-           urllib.parse.quote(GEMINI_API_KEY))
     payload = json.dumps({'contents': [{'parts': [{'text': prompt}]}],
         'generationConfig': {'temperature': 0.7, 'maxOutputTokens': 220}}).encode('utf-8')
-    req = urllib.request.Request(url, data=payload,
-        headers={'Content-Type': 'application/json'}, method='POST')
+
+    # Try the configured primary model first, then a separate lower-cost Flash-Lite model.
+    models = [GEMINI_MODEL]
+    backup_model = os.getenv('GEMINI_BACKUP_MODEL', 'gemini-3.5-flash-lite').strip()
+    if backup_model and backup_model not in models:
+        models.append(backup_model)
+
     last_error = None
-    # Retry transient network/time-out failures before falling back to a reviewed caption.
-    for attempt in range(1, 4):
-        try:
-            with urllib.request.urlopen(req, timeout=90) as response:
-                data = json.loads(response.read().decode('utf-8'))
-            generated = data['candidates'][0]['content']['parts'][0]['text'].strip()
-            if not generated:
-                raise ValueError('Gemini returned an empty caption')
-            return generated, 'Gemini generated content using ' + GEMINI_MODEL
-        except Exception as exc:
-            last_error = exc
-            if isinstance(exc, urllib.error.HTTPError):
-                # Record safe diagnostic details without logging the API key or request URL.
-                try:
-                    error_body = exc.read(1000).decode('utf-8', errors='replace')
-                    error_json = json.loads(error_body) if error_body else {}
-                    error_message = error_json.get('error', {}).get('message', '')
-                except Exception:
-                    error_message = ''
-                safe_message = ' — ' + error_message[:240] if error_message else ''
-                print('Gemini attempt ' + str(attempt) + ' failed: HTTP ' +
-                      str(exc.code) + safe_message)
-            else:
-                print('Gemini attempt ' + str(attempt) + ' failed: ' + type(exc).__name__)
-            # Do not retry permanent API/authentication errors.
-            if isinstance(exc, urllib.error.HTTPError) and exc.code not in (408, 429, 500, 502, 503, 504):
-                break
-            if attempt < 3:
-                time.sleep(5 * attempt)
+    for model_index, model in enumerate(models):
+        attempts = 3 if model_index == 0 else 2
+        for attempt in range(1, attempts + 1):
+            url = ('https://generativelanguage.googleapis.com/v1beta/models/' +
+                   urllib.parse.quote(model, safe='') + ':generateContent?key=' +
+                   urllib.parse.quote(GEMINI_API_KEY))
+            req = urllib.request.Request(url, data=payload,
+                headers={'Content-Type': 'application/json'}, method='POST')
+            try:
+                with urllib.request.urlopen(req, timeout=90) as response:
+                    data = json.loads(response.read().decode('utf-8'))
+                generated = data['candidates'][0]['content']['parts'][0]['text'].strip()
+                if not generated:
+                    raise ValueError('Gemini returned an empty caption')
+                label = 'primary' if model_index == 0 else 'backup'
+                return generated, 'Gemini generated content using ' + label + ' model ' + model
+            except Exception as exc:
+                last_error = exc
+                if isinstance(exc, urllib.error.HTTPError):
+                    try:
+                        error_body = exc.read(1000).decode('utf-8', errors='replace')
+                        error_json = json.loads(error_body) if error_body else {}
+                        error_message = error_json.get('error', {}).get('message', '')
+                    except Exception:
+                        error_message = ''
+                    safe_message = ' — ' + error_message[:240] if error_message else ''
+                    print('Gemini model ' + model + ' attempt ' + str(attempt) +
+                          ' failed: HTTP ' + str(exc.code) + safe_message)
+                    # Authentication, permission, and invalid-model errors won't improve on retry.
+                    if exc.code not in (408, 429, 500, 502, 503, 504):
+                        break
+                else:
+                    print('Gemini model ' + model + ' attempt ' + str(attempt) +
+                          ' failed: ' + type(exc).__name__)
+                if attempt < attempts:
+                    time.sleep(5 * attempt)
+
     if isinstance(last_error, urllib.error.HTTPError):
         try:
             error_body = last_error.read(1000).decode('utf-8', errors='replace')
@@ -171,8 +182,8 @@ def generate_ai_post():
         detail = 'HTTP ' + str(last_error.code) + safe_message
     else:
         detail = type(last_error).__name__ if last_error else 'unknown error'
-    print('Gemini generation failed; using reviewed fallback templates: ' + detail)
-    return None, 'fallback: Gemini request failed (' + detail + ')'
+    print('All Gemini models failed; using reviewed fallback templates: ' + detail)
+    return None, 'fallback: all Gemini models failed (' + detail + ')'
 
 def main():
     post, ai_status = generate_ai_post()
