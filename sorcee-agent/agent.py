@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """SORCEE daily marketing assistant. Safe by default: DRY_RUN=true."""
-import csv, datetime as dt, hashlib, json, os, smtplib, ssl, urllib.parse, urllib.request
+import csv, datetime as dt, hashlib, json, os, smtplib, ssl, time, urllib.parse, urllib.request
 from email.message import EmailMessage
 from pathlib import Path
 
@@ -130,16 +130,26 @@ def generate_ai_post():
         'generationConfig': {'temperature': 0.7, 'maxOutputTokens': 220}}).encode('utf-8')
     req = urllib.request.Request(url, data=payload,
         headers={'Content-Type': 'application/json'}, method='POST')
-    try:
-        with urllib.request.urlopen(req, timeout=45) as response:
-            data = json.loads(response.read().decode('utf-8'))
-        generated = data['candidates'][0]['content']['parts'][0]['text'].strip()
-        if not generated:
-            raise ValueError('Gemini returned an empty caption')
-        return generated, 'Gemini generated content using ' + GEMINI_MODEL
-    except Exception as exc:
-        print('Gemini generation failed; using reviewed fallback templates: ' + str(exc))
-        return None, 'fallback: Gemini request failed (' + type(exc).__name__ + ')'
+    last_error = None
+    # Retry transient network/time-out failures before falling back to a reviewed caption.
+    for attempt in range(1, 4):
+        try:
+            with urllib.request.urlopen(req, timeout=90) as response:
+                data = json.loads(response.read().decode('utf-8'))
+            generated = data['candidates'][0]['content']['parts'][0]['text'].strip()
+            if not generated:
+                raise ValueError('Gemini returned an empty caption')
+            return generated, 'Gemini generated content using ' + GEMINI_MODEL
+        except Exception as exc:
+            last_error = exc
+            print('Gemini attempt ' + str(attempt) + ' failed: ' + type(exc).__name__)
+            # Do not retry permanent API/authentication errors.
+            if isinstance(exc, urllib.error.HTTPError) and exc.code not in (408, 429, 500, 502, 503, 504):
+                break
+            if attempt < 3:
+                time.sleep(5 * attempt)
+    print('Gemini generation failed; using reviewed fallback templates: ' + str(last_error))
+    return None, 'fallback: Gemini request failed (' + type(last_error).__name__ + ')'
 
 def main():
     post, ai_status = generate_ai_post()
