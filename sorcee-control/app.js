@@ -5,7 +5,7 @@ let drafts=[
 {id:2,channel:"Instagram",title:"Sample Instagram draft",body:"Connecting Global Brands with Trusted Local Factories. Apparel sourcing coordination from Bangladesh. MOQ: 50 pieces. Contact SORCEE for your next collection.",status:"Sample only"}
 ];
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2600)}
-function card(d){return '<article class="card"><div class="card-head"><span class="eyebrow">'+d.channel.toUpperCase()+' DRAFT</span><span class="pill">'+d.status+'</span></div><h3>'+escapeHtml(d.title)+'</h3><p>'+escapeHtml(d.body)+'</p><small>নমুনা খসড়া—এটি বাস্তব পোস্ট নয়। অনুমোদন বাটন শুধু এই ব্রাউজারে পরীক্ষামূলকভাবে কাজ করে।</small></article>'}
+function card(d){return '<article class="card"><div class="card-head"><span class="eyebrow">'+d.channel.toUpperCase()+' DRAFT</span><span class="pill">'+d.status+'</span></div><h3>'+escapeHtml(d.title)+'</h3><p>'+escapeHtml(d.body)+'</p><small>নমুনা খসড়া—এটি বাস্তব পোস্ট নয়। এখানে অনুমোদন বা প্রকাশের কোনো কার্যকর বাটন নেই।</small></article>'}
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function render(){document.getElementById("postCount").textContent="0";document.getElementById("pendingTotal").textContent="0";document.getElementById("mailCount").textContent="0";document.getElementById("marketingList").innerHTML=drafts.map(card).join("");document.getElementById("attention").innerHTML='<div class="empty"><h3>কোনো বাস্তব অনুমোদন অপেক্ষমাণ নেই</h3><p>AI-এর বাস্তব খসড়া ও নিরাপদ অনুমোদন সংযোগ এখনো তৈরি হচ্ছে। নিচের নমুনাগুলো শুধু নকশা দেখানোর জন্য।</p></div>'}
 function showStatus(s){
