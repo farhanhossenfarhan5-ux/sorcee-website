@@ -11,6 +11,9 @@ TODAY = dt.datetime.now(dt.timezone.utc).date().isoformat()
 DRY_RUN = os.getenv("DRY_RUN", "true").lower() != "false"
 MAX_EMAILS = min(int(os.getenv("MAX_EMAILS_PER_RUN", "3")), 10)
 
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash").strip()
+
 POSTS = [
 """SORCEE connects global apparel brands with trusted manufacturing partners in Bangladesh.
 
@@ -107,8 +110,41 @@ def send_approved_emails():
         sent += 1; status.append("sent one approved email")
     return sent, status
 
+def generate_ai_post():
+    if not GEMINI_API_KEY:
+        return None, 'fallback: GEMINI_API_KEY not configured'
+    prompt = (
+        'Write one polished English social-media caption for SORCEE, a Bangladesh-based '
+        'B2B apparel sourcing coordinator connecting global brands with local factories. '
+        'MOQ is 50 pieces. SORCEE coordinates sourcing and production; do not claim it owns '
+        'factories. Do not invent certifications, prices, delivery times, client names, '
+        'factory capabilities, guarantees, or shipping terms. Keep it under 110 words, '
+        'include a clear invitation to request a quote, the exact URL '
+        'https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html '
+        'and 3-5 relevant hashtags. Return only the caption.'
+    )
+    url = ('https://generativelanguage.googleapis.com/v1beta/models/' +
+           urllib.parse.quote(GEMINI_MODEL, safe='') + ':generateContent?key=' +
+           urllib.parse.quote(GEMINI_API_KEY))
+    payload = json.dumps({'contents': [{'parts': [{'text': prompt}]}],
+        'generationConfig': {'temperature': 0.7, 'maxOutputTokens': 220}}).encode('utf-8')
+    req = urllib.request.Request(url, data=payload,
+        headers={'Content-Type': 'application/json'}, method='POST')
+    try:
+        with urllib.request.urlopen(req, timeout=45) as response:
+            data = json.loads(response.read().decode('utf-8'))
+        generated = data['candidates'][0]['content']['parts'][0]['text'].strip()
+        if not generated:
+            raise ValueError('Gemini returned an empty caption')
+        return generated, 'Gemini generated content using ' + GEMINI_MODEL
+    except Exception as exc:
+        print('Gemini generation failed; using reviewed fallback templates: ' + str(exc))
+        return None, 'fallback: Gemini request failed (' + type(exc).__name__ + ')'
+
 def main():
-    post = POSTS[dt.date.today().toordinal() % len(POSTS)]
+    post, ai_status = generate_ai_post()
+    if post is None:
+        post = POSTS[dt.date.today().toordinal() % len(POSTS)]
     (OUT/"social-post.txt").write_text(post+"\n", encoding="utf-8")
     fb, ig = facebook_publish(post), instagram_publish(post)
     email_count, email_status = send_approved_emails()
@@ -120,6 +156,7 @@ def main():
         f"# SORCEE Daily Agent Report — {TODAY}", "",
         f"- Mode: {'DRY RUN (no messages sent)' if DRY_RUN else 'LIVE'}",
         "- Website files changed: no",
+        f"- AI: {ai_status}",
         f"- Facebook: {fb}", f"- Instagram: {ig}",
         f"- Approved emails sent: {email_count}",
         f"- Email processing: {'; '.join(email_status) if email_status else 'no approved leads'}",
