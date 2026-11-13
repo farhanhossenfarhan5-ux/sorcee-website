@@ -208,7 +208,24 @@ def main():
         "- Next step: review output/social-post.txt and output/linkedin-draft.txt",
     ]
     (OUT/f"report-{TODAY}.md").write_text("\n".join(report)+"\n", encoding="utf-8")
-    print("\n".join(report))
+    dashboard_status = {
+        "date": TODAY,
+        "mode": "DRY RUN" if DRY_RUN else "LIVE",
+        "ai_status": ai_status,
+        "facebook_status": fb,
+        "instagram_status": ig,
+        "approved_emails_sent": email_count,
+        "email_status": "; ".join(email_status) if email_status else "no approved leads",
+        "linkedin_status": "draft created; no automated connection requests",
+        "website_files_changed": False,
+        "social_draft": post,
+        "report_file": f"../sorcee-agent/output/report-{TODAY}.md",
+        "updated_at_utc": dt.datetime.now(dt.timezone.utc).isoformat()
+    }
+    (OUT/"dashboard-status.json").write_text(
+        json.dumps(dashboard_status, ensure_ascii=False, indent=2) + "\\n",
+        encoding="utf-8")
+    print("\\n".join(report))
 
 if __name__ == "__main__":
     main()
