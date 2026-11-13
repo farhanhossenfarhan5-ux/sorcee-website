@@ -223,9 +223,9 @@ def main():
         "updated_at_utc": dt.datetime.now(dt.timezone.utc).isoformat()
     }
     (OUT/"dashboard-status.json").write_text(
-        json.dumps(dashboard_status, ensure_ascii=False, indent=2) + "\\n",
+        json.dumps(dashboard_status, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8")
-    print("\\n".join(report))
+    print("\n".join(report))
 
 if __name__ == "__main__":
     main()
