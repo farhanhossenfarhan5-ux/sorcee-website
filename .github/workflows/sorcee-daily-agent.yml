@@ -21,7 +21,7 @@ jobs:
       - name: Run SORCEE agent
         working-directory: sorcee-agent
         env:
-          DRY_RUN: ${{ vars.SORCEE_DRY_RUN || 'true' }}
+          DRY_RUN: 'true'
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-3.8-flash' }}
           GEMINI_BACKUP_MODEL: ${{ vars.GEMINI_BACKUP_MODEL || 'gemini-3.5-flash-lite' }}
