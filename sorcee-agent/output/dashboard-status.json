@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-14",
+  "mode": "DRY RUN",
+  "ai_status": "Gemini generated content using backup model gemini-3.5-flash-lite",
+  "facebook_status": "skipped: Facebook credentials not configured",
+  "instagram_status": "skipped: Instagram account token or public image URL missing",
+  "approved_emails_sent": 0,
+  "email_status": "no approved leads",
+  "linkedin_status": "draft created; no automated connection requests",
+  "website_files_changed": false,
+  "social_draft": "Streamline your apparel production in Bangladesh with SORCEE. We bridge the gap between global brands and trusted local manufacturing partners, coordinating your sourcing and production every step of the way. With a flexible MOQ starting at just 50 pieces, we help bring your clothing line to life efficiently and transparently. \n\nReady to start your next production run? Request a custom quote today: https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html\n\n#ApparelSourcing #BangladeshApparel #FashionProduction #SupplyChainManagement #B2BFashion",
+  "report_file": "../sorcee-agent/output/report-2026-11-14.md",
+  "updated_at_utc": "2026-11-14T09:59:34.408756+00:00"
+}
