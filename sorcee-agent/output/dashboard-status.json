@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-17",
+  "date": "2026-11-18",
   "mode": "DRY RUN",
   "ai_status": "Gemini generated content using backup model gemini-3.5-flash-lite",
   "facebook_status": "skipped: Facebook credentials not configured",
@@ -8,7 +8,7 @@
   "email_status": "no approved leads",
   "linkedin_status": "draft created; no automated connection requests",
   "website_files_changed": false,
-  "social_draft": "Navigating Bangladesh’s apparel manufacturing landscape can be complex. SORCEE acts as your dedicated B2B sourcing coordinator, bridging the gap between global brands and trusted local production facilities. We manage the details of sourcing and manufacturing execution so you don't have to, supporting production runs with an MOQ starting at just 50 pieces. Streamline your supply chain and bring your apparel designs to life efficiently. \n\nReady to start your next production run? Request a custom quote today: https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html\n\n#ApparelSourcing #GarmentManufacturing #BangladeshApparel #SupplyChainManagement #B2BFashion",
-  "report_file": "../sorcee-agent/output/report-2026-11-17.md",
-  "updated_at_utc": "2026-11-17T11:37:32.819912+00:00"
+  "social_draft": "Streamline your apparel production in Bangladesh with SORCEE. We bridge the gap between global brands and trusted local garment factories, coordinating your sourcing and manufacturing needs seamlessly with an accessible MOQ of just 50 pieces. Let us manage the complexities on the ground so you can focus on growing your brand. \n\nReady to start your next production run? Request a quote today: https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html\n\n#ApparelSourcing #GarmentManufacturing #BangladeshApparel #B2BFashion #TextileSourcing",
+  "report_file": "../sorcee-agent/output/report-2026-11-18.md",
+  "updated_at_utc": "2026-11-18T11:25:40.284344+00:00"
 }
