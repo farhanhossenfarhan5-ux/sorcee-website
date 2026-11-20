@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Black and white baseball caps">
+<defs>
+ <linearGradient id="bg" x2="0" y2="1"><stop stop-color="#fbf8ef"/><stop offset="1" stop-color="#eee8da"/></linearGradient>
+ <linearGradient id="black" x2=".2" y2="1"><stop stop-color="#343638"/><stop offset="1" stop-color="#090b0c"/></linearGradient>
+ <linearGradient id="white" x2=".2" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#d9d9d5"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="18"/></filter>
+</defs>
+<rect width="1200" height="800" fill="url(#bg)"/>
+<ellipse cx="310" cy="650" rx="260" ry="38" fill="#777" opacity=".22" filter="url(#shadow)"/>
+<ellipse cx="890" cy="650" rx="260" ry="38" fill="#777" opacity=".2" filter="url(#shadow)"/>
+<!-- black cap -->
+<path d="M90 510 Q110 260 285 180 Q430 115 565 220 Q680 310 700 500 Q590 555 405 555 Q220 555 90 510Z" fill="url(#black)" stroke="#050607" stroke-width="8"/>
+<path d="M90 510 Q300 570 700 500 Q670 625 405 665 Q165 660 90 510Z" fill="#111416" stroke="#050607" stroke-width="8"/>
+<path d="M405 555 Q400 345 405 160" fill="none" stroke="#55595a" stroke-width="5" opacity=".55"/>
+<path d="M285 180 Q405 245 405 555 M565 220 Q470 280 405 555" fill="none" stroke="#55595a" stroke-width="5" opacity=".45"/>
+<path d="M405 160 Q430 115 465 160 Q455 188 405 190Z" fill="#111416" stroke="#050607" stroke-width="6"/>
+<g fill="none" stroke="#686d6e" stroke-width="3" opacity=".45"><path d="M125 515 Q350 595 670 515"/><path d="M155 545 Q365 620 640 545"/><path d="M195 575 Q380 640 600 575"/></g>
+<g fill="#777" opacity=".8"><circle cx="235" cy="310" r="5"/><circle cx="575" cy="320" r="5"/></g>
+<!-- white cap -->
+<path d="M690 510 Q710 260 885 180 Q1030 115 1165 220 Q1280 310 1300 500 Q1190 555 1005 555 Q820 555 690 510Z" fill="url(#white)" stroke="#c6c6c1" stroke-width="8" transform="translate(-100 0)"/>
+<path d="M590 510 Q800 570 1200 500 Q1170 625 905 665 Q665 660 590 510Z" fill="#e8e8e3" stroke="#c6c6c1" stroke-width="8"/>
+<path d="M905 555 Q900 345 905 160" fill="none" stroke="#c4c4bf" stroke-width="5"/>
+<path d="M785 180 Q905 245 905 555 M1065 220 Q970 280 905 555" fill="none" stroke="#c4c4bf" stroke-width="5"/>
+<path d="M905 160 Q930 115 965 160 Q955 188 905 190Z" fill="#e5e5df" stroke="#c6c6c1" stroke-width="6"/>
+<g fill="none" stroke="#bfc0bb" stroke-width="3"><path d="M625 515 Q850 595 1170 515"/><path d="M655 545 Q865 620 1140 545"/><path d="M695 575 Q880 640 1100 575"/></g>
+<g fill="#c5c5c0"><circle cx="735" cy="310" r="5"/><circle cx="1075" cy="320" r="5"/></g>
+</svg>
