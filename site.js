@@ -24,8 +24,13 @@ return ['Hello SORCEE, I would like to request a quote.','','Name: '+v('fullName
 d.getElementById('sendWa').addEventListener('click',function(){if(!valid())return;
 window.open('https://wa.me/8801340354289?text='+encodeURIComponent(text()),'_blank','noopener');msg(bn()?'হোয়াটসঅ্যাপ খোলা হয়েছে। সেখানে বার্তাটি পাঠান।':'WhatsApp opened. Press send in WhatsApp to deliver your inquiry.','ok')});
 d.getElementById('sendEmail').addEventListener('click',function(){if(!valid())return;
-if(!C.emailEndpoint){d.getElementById('pending').hidden=false;msg(bn()?'ইমেইল ডেলিভারি এখনও চালু হয়নি।':'Email delivery is not configured yet. Nothing was sent.','err');return}
-if(f._honey.value)return;var fd=new FormData(f);fd.append('_subject','SORCEE quote request');fd.append('_captcha','false');
+if(f._honey.value)return;
+if(!C.emailEndpoint){
+var subject=encodeURIComponent('SORCEE quote request');
+var body=encodeURIComponent(text()+'\n\nPlease attach any reference files before sending.');
+window.location.href='mailto:sorcee.official@gmail.com?subject='+subject+'&body='+body;
+msg(bn()?'আপনার ইমেইল অ্যাপ খুললে বার্তাটি দেখে Send চাপুন। রেফারেন্স ফাইল থাকলে নিজে যুক্ত করুন।':'Your email app should open with the inquiry. Review it and press Send. Attach reference files manually if needed.','ok');return}
+var fd=new FormData(f);fd.append('_subject','SORCEE quote request');fd.append('_captcha','false');
 msg(bn()?'পাঠানো হচ্ছে...':'Sending...');
 fetch(C.emailEndpoint,{method:'POST',body:fd,headers:{Accept:'application/json'}}).then(function(r){if(!r.ok)throw 0;msg(bn()?'ধন্যবাদ। আপনার ইনকোয়ারি পাঠানো হয়েছে।':'Thank you. Your inquiry was sent.','ok');f.reset()})
 .catch(function(){msg(bn()?'পাঠানো যায়নি। হোয়াটসঅ্যাপ বা ইমেইল ব্যবহার করুন।':'Sending failed. Please use WhatsApp or email us directly.','err')})});
