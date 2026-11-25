@@ -15,8 +15,8 @@ function bn(){return d.documentElement.lang==='bn'}
 function valid(){var ok=true;f.querySelectorAll('[required]').forEach(function(el){var bad=!el.value.trim();
 if(el.name==='email'&&el.value&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value))bad=true;
 el.closest('.f').classList.toggle('invalid',bad);if(bad)ok=false});
-var n=parseInt(f.quantity.value,10);if(!(n>=50)){f.quantity.closest('.f').classList.add('invalid');ok=false}
-if(!ok)msg(bn()?'অনুগ্রহ করে লাল ঘরগুলো ঠিক করুন। পরিমাণ ন্যূনতম ৫০ পিস হতে হবে।':'Please fix the highlighted fields. Quantity must be at least 50 pieces.','err');return ok}
+var n=parseInt(f.quantity.value,10),sampleOnly=f.service.value==='Sample development only',minimum=sampleOnly?1:50;if(!(n>=minimum)){f.quantity.closest('.f').classList.add('invalid');ok=false}
+if(!ok)msg(bn()?(sampleOnly?'অনুগ্রহ করে লাল ঘরগুলো ঠিক করুন। নমুনার পরিমাণ কমপক্ষে ১ হতে হবে।':'অনুগ্রহ করে লাল ঘরগুলো ঠিক করুন। উৎপাদনের পরিমাণ ন্যূনতম ৫০ পিস হতে হবে।'):(sampleOnly?'Please fix the highlighted fields. Sample quantity must be at least 1.':'Please fix the highlighted fields. Production quantity must be at least 50 pieces.'),'err');return ok}
 function text(){var v=function(n){return(f[n].value||'-').trim()};
 return ['Hello SORCEE, I would like to request a quote.','','Name: '+v('fullName'),'Business: '+v('business'),'Email: '+v('email'),'Phone/WhatsApp: '+v('phone'),'Country: '+v('country'),
 'Requested service: '+v('service'),'Product category: '+v('category'),'Estimated quantity: '+v('quantity'),'Specifications: '+v('specs'),'Fabric: '+v('fabric'),'Size breakdown: '+v('sizes'),'Colors: '+v('colors'),
