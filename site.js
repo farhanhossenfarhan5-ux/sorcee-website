@@ -19,7 +19,7 @@ var n=parseInt(f.quantity.value,10);if(!(n>=50)){f.quantity.closest('.f').classL
 if(!ok)msg(bn()?'অনুগ্রহ করে লাল ঘরগুলো ঠিক করুন। পরিমাণ ন্যূনতম ৫০ পিস হতে হবে।':'Please fix the highlighted fields. Quantity must be at least 50 pieces.','err');return ok}
 function text(){var v=function(n){return(f[n].value||'-').trim()};
 return ['Hello SORCEE, I would like to request a quote.','','Name: '+v('fullName'),'Business: '+v('business'),'Email: '+v('email'),'Phone/WhatsApp: '+v('phone'),'Country: '+v('country'),
-'Product category: '+v('category'),'Estimated quantity: '+v('quantity'),'Specifications: '+v('specs'),'Fabric: '+v('fabric'),'Size breakdown: '+v('sizes'),'Colors: '+v('colors'),
+'Requested service: '+v('service'),'Product category: '+v('category'),'Estimated quantity: '+v('quantity'),'Specifications: '+v('specs'),'Fabric: '+v('fabric'),'Size breakdown: '+v('sizes'),'Colors: '+v('colors'),
 'Customization: '+v('custom'),'Message: '+v('message')].join('\n')}
 d.getElementById('sendWa').addEventListener('click',function(){if(!valid())return;
 window.open('https://wa.me/8801340354289?text='+encodeURIComponent(text()),'_blank','noopener');msg(bn()?'হোয়াটসঅ্যাপ খোলা হয়েছে। সেখানে বার্তাটি পাঠান।':'WhatsApp opened. Press send in WhatsApp to deliver your inquiry.','ok')});
