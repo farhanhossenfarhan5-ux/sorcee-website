@@ -23,15 +23,36 @@ return ['Hello SORCEE, I would like to request a quote.','','Name: '+v('fullName
 'Customization: '+v('custom'),'Message: '+v('message')].join('\n')}
 d.getElementById('sendWa').addEventListener('click',function(){if(!valid())return;
 window.open('https://wa.me/8801340354289?text='+encodeURIComponent(text()),'_blank','noopener');msg(bn()?'হোয়াটসঅ্যাপ খোলা হয়েছে। সেখানে বার্তাটি পাঠান।':'WhatsApp opened. Press send in WhatsApp to deliver your inquiry.','ok')});
-d.getElementById('sendEmail').addEventListener('click',function(){if(!valid())return;
+d.getElementById('sendEmail').addEventListener('click',async function(){
+if(!valid())return;
 if(f._honey.value)return;
-if(!C.emailEndpoint){
-var subject=encodeURIComponent('SORCEE quote request');
-var body=encodeURIComponent(text()+'\n\nPlease attach any reference files before sending.');
-window.location.href='mailto:sorcee.official@gmail.com?subject='+subject+'&body='+body;
-msg(bn()?'আপনার ইমেইল অ্যাপ খুললে বার্তাটি দেখে Send চাপুন। রেফারেন্স ফাইল থাকলে নিজে যুক্ত করুন।':'Your email app should open with the inquiry. Review it and press Send. Attach reference files manually if needed.','ok');return}
-var fd=new FormData(f);fd.append('_subject','SORCEE quote request');fd.append('_captcha','false');
-msg(bn()?'পাঠানো হচ্ছে...':'Sending...');
-fetch(C.emailEndpoint,{method:'POST',body:fd,headers:{Accept:'application/json'}}).then(function(r){if(!r.ok)throw 0;msg(bn()?'ধন্যবাদ। আপনার ইনকোয়ারি পাঠানো হয়েছে।':'Thank you. Your inquiry was sent.','ok');f.reset()})
-.catch(function(){msg(bn()?'পাঠানো যায়নি। হোয়াটসঅ্যাপ বা ইমেইল ব্যবহার করুন।':'Sending failed. Please use WhatsApp or email us directly.','err')})});
+if(!C.emailEndpoint){msg(bn()?'ইমেইল ব্যবস্থা এখনো কনফিগার করা হয়নি।':'Email delivery is not configured yet.','err');return}
+var button=this,files=f.querySelector('input[name="files"]');
+button.disabled=true;
+msg(bn()?'ইনকোয়ারি পাঠানো হচ্ছে...':'Sending your inquiry...');
+var payload={};
+new FormData(f).forEach(function(value,key){
+if(key!=='files'&&key!=='_honey'&&typeof value==='string')payload[key]=value;
+});
+payload._subject='New SORCEE website inquiry';
+payload._replyto=f.email.value;
+payload._url=location.href;
+payload._honey=f._honey.value;
+if(files&&files.files&&files.files.length){
+payload.reference_files_selected=Array.from(files.files).map(function(file){return file.name}).join(', ');
+}
+try{
+var response=await fetch(C.emailEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+var result=await response.json();
+if(result.success==='true'||result.success===true){
+msg(bn()?'ধন্যবাদ! আপনার ইনকোয়ারি সরাসরি SORCEE-তে পাঠানো হয়েছে।':'Thank you! Your inquiry has been sent directly to SORCEE.','ok');
+f.reset();
+}else{
+var detail=result.message||'The email service did not accept the inquiry.';
+msg(bn()?'ইমেইল পাঠানো যায়নি: '+detail:'Could not send the inquiry: '+detail,'err');
+}
+}catch(error){
+msg(bn()?'সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা WhatsApp ব্যবহার করুন।':'A connection error occurred. Please try again or use WhatsApp.','err');
+}finally{button.disabled=false}
+});
 })();
