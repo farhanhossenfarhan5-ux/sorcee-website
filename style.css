@@ -123,3 +123,7 @@ nav .btn{margin-top:1rem;width:100%;text-align:center;padding:.9rem}.lang{margin
 .hero{min-height:0;display:block;padding:2.6rem 0 13rem;
 background:linear-gradient(180deg,rgba(6,28,20,.97) 0%,rgba(6,28,20,.9) 50%,rgba(6,28,20,.5) 78%,rgba(6,28,20,.08) 100%),url(hero.jpg) 80% center/cover no-repeat,#0a2a20}
 .hero h1{font-size:clamp(2rem,9vw,2.8rem)}}
+
+/* Homepage positioning label */
+.eyebrow{display:inline-block;margin:0 0 1rem;padding:.45rem .7rem;border:1px solid rgba(200,169,106,.75);color:var(--gold);font-size:.76rem;font-weight:600;letter-spacing:.12em;line-height:1.5}
+html[lang=bn] .eyebrow{letter-spacing:0;font-size:.82rem}
