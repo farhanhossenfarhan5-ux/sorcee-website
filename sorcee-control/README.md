@@ -27,4 +27,4 @@ https://sorcee.xyz/sorcee-control/
 - The 360-degree product viewer is not enabled because the repository currently has only one image per product category. A genuine 360 view needs a multi-angle image sequence or a 3D model per product; the current single images must not be presented as 360-degree product photography.
 
 ## Database security
-The matching SQL is stored in `supabase/migrations/20261127000000_secure_sorcee_crm_admin_access.sql`.
+The SQL migrations are stored in `supabase/migrations/`: initial admin-only access policies and grants, followed by an RLS lookup optimization and supporting foreign-key indexes.
