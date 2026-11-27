@@ -7,7 +7,7 @@ var s=L.get('lang')||'en';setLang(s==='bn'?'bn':'en');
 d.querySelectorAll('[data-set]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.set)})});
 var bg=d.querySelector('.burger'),nv=d.getElementById('nav');
 if(bg&&nv)bg.addEventListener('click',function(){var o=nv.classList.toggle('open');bg.setAttribute('aria-expanded',o)});
-var f=d.getElementById('quote');if(!f)return;
+var f=d.getElementById('quote');if(f){
 var q=new URLSearchParams(location.search).get('category');if(q)f.category.value=q;
 var st=d.getElementById('status');
 function msg(t,c){st.textContent=t;st.className='status '+(c||'')}
@@ -56,6 +56,7 @@ msg(bn()?'সংযোগে সমস্যা হয়েছে। আবার 
 }finally{button.disabled=false}
 });
 
+}
 /* SORCEE corporate reveal motion — gracefully falls back without observer support */
 var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(!reduceMotion){
