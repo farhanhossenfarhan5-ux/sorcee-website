@@ -27,7 +27,7 @@ d.getElementById('sendEmail').addEventListener('click',async function(){
 if(!valid())return;
 if(f._honey.value)return;
 if(!C.emailEndpoint){msg(bn()?'ইমেইল ব্যবস্থা এখনো কনফিগার করা হয়নি।':'Email delivery is not configured yet.','err');return}
-var button=this,files=f.querySelector('input[name="files"]');
+var button=this,files=f.querySelector('input[name="files"]'),lockButton=false;
 button.disabled=true;
 msg(bn()?'ইনকোয়ারি পাঠানো হচ্ছে...':'Sending your inquiry...');
 var payload={};
@@ -64,7 +64,7 @@ msg(bn()?'ধন্যবাদ! আপনার ইনকোয়ারি SOR
 f.reset();
 }else if(emailResult.ok&&!crmResult.ok){
 msg(bn()?'ইমেইল পাঠানো হয়েছে, তবে CRM-এ সংরক্ষণ হয়নি। অনুগ্রহ করে আবার পাঠাবেন না; SORCEE টিম এটি হাতে যোগ করবে।':'Your email was sent, but CRM sync failed. Please do not submit again; the SORCEE team will add it manually.','err');
-button.disabled=true;
+lockButton=true;
 }else if(!emailResult.ok&&crmResult.ok){
 msg(bn()?'আপনার ইনকোয়ারি CRM-এ সংরক্ষিত হয়েছে, কিন্তু ইমেইল নোটিফিকেশন পাঠানো যায়নি।':'Your inquiry was saved in the CRM, but the email notification could not be sent.'+(crmResult.number?' Inquiry #'+crmResult.number:''),'ok');
 f.reset();
@@ -74,7 +74,7 @@ msg(bn()?'ইনকোয়ারি পাঠানো যায়নি। আ�
 }catch(error){
 msg(bn()?'সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা WhatsApp ব্যবহার করুন।':'A connection error occurred. Please try again or use WhatsApp.','err');
 }finally{
-if(!button.disabled)button.disabled=false;
+button.disabled=lockButton;
 }
 });
 
