@@ -1,117 +1,15 @@
 <!doctype html>
-<html lang="bn">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#102c25">
-<title>SORCEE Control | Private CRM</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<section id="loginGate" class="login-wrap">
-  <div class="login-card">
-    <a class="brand login-brand" href="../index.html"><span class="mark">S</span><span>SORCEE <small>PRIVATE CONTROL CENTER</small></span></a>
-    <p class="eyebrow">SECURE WORKSPACE</p>
-    <h1>Welcome back.</h1>
-    <p class="login-copy">SORCEE-এর ব্যক্তিগত ক্রেতা ও ব্যবসা পরিচালনা কেন্দ্র। প্রবেশের জন্য অনুমোদিত অ্যাকাউন্ট ব্যবহার করুন।</p>
-    <form id="loginForm">
-      <label>Email address<input id="loginEmail" type="email" autocomplete="username" required placeholder="name@company.com"></label>
-      <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="আপনার পাসওয়ার্ড"></label>
-      <button class="primary wide" id="loginButton" type="submit">নিরাপদে প্রবেশ করুন</button>
-      <p id="loginStatus" class="form-status" role="status" aria-live="polite"></p>
-    </form>
-    <p class="security-note">শুধু SORCEE-এর অনুমোদিত প্রশাসক প্রবেশ করতে পারবেন। নতুন অ্যাকাউন্ট তৈরি বা প্রকাশ্য নিবন্ধন বন্ধ রাখা হয়েছে।</p>
-    <a class="back-link" href="../index.html">← মূল ওয়েবসাইটে ফিরে যান</a>
-  </div>
-</section>
-
-<div id="appShell" class="shell" hidden>
-<aside class="sidebar">
-  <a class="brand" href="../index.html"><span class="mark">S</span><span>SORCEE <small>CONTROL CENTER</small></span></a>
-  <div class="side-label">WORKSPACE</div>
-  <button class="nav active" data-page="overview">▦ <span>Overview</span></button>
-  <button class="nav" data-page="buyers">♧ <span>Buyer CRM</span><b id="buyerCount">0</b></button>
-  <button class="nav" data-page="marketing">◈ <span>Marketing</span></button>
-  <button class="nav" data-page="email">✉ <span>Email approvals</span></button>
-  <button class="nav" data-page="reports">▤ <span>Reports</span></button>
-  <button class="nav" data-page="settings">⚙ <span>Security</span></button>
-  <div class="side-bottom"><span class="status-dot"></span> Private admin access<small>SUPABASE AUTH · RLS ENABLED</small></div>
-</aside>
-
-<main class="main">
-<header class="top">
-  <div><div class="eyebrow">SORCEE BUSINESS OPERATIONS</div><h1 id="pageTitle">Overview</h1></div>
-  <div class="topright"><span class="safe">● PRIVATE</span><span id="userEmail" class="user-email"></span><button id="logoutButton" class="logout">Log out</button></div>
-</header>
-
-<section id="overview" class="page show">
-  <div class="welcome"><div><div class="eyebrow light">SORCEE TEAM WORKSPACE</div><h2>Your business, one clear view.</h2><p>ক্রেতার অনুসন্ধান, যোগাযোগ, অর্ডারের অগ্রগতি ও দৈনিক রিপোর্ট এক জায়গায় পরিচালনা করুন।</p></div><div class="welcome-icon">✦</div></div>
-  <div class="stats">
-    <article><span>TOTAL BUYER LEADS</span><strong id="statTotal">0</strong><small>CRM-এ সংরক্ষিত ক্রেতা</small></article>
-    <article><span>NEW INQUIRIES</span><strong id="statNew">0</strong><small>প্রাথমিক যোগাযোগ বাকি</small></article>
-    <article><span>QUOTATIONS SENT</span><strong id="statQuote">0</strong><small>দরপ্রস্তাব পাঠানো হয়েছে</small></article>
-    <article><span>CONFIRMED ORDERS</span><strong id="statConfirmed">0</strong><small>নিশ্চিত অর্ডার</small></article>
-  </div>
-  <div class="section-head"><div><h3>Recent buyer inquiries</h3><p>সর্বশেষ ৫টি ক্রেতার অনুসন্ধান</p></div><button class="outline" data-goto="buyers">সব ক্রেতা দেখুন →</button></div>
-  <div id="recentBuyers" class="cards"><div class="empty">তথ্য লোড হচ্ছে…</div></div>
-  <div class="section-head"><div><h3>System status</h3><p>সর্বশেষ পাওয়া কার্যক্রমের অবস্থা</p></div></div>
-  <div class="activity" id="systemActivity">
-    <div><i class="ok">✓</i><span><b>Supabase authentication</b><small>Admin login required</small></span><time>Protected</time></div>
-    <div><i class="ok">✓</i><span><b>Buyer CRM database</b><small>Row Level Security enabled</small></span><time>Protected</time></div>
-    <div><i class="warn">!</i><span><b>Website quote integration</b><small>Website inquiry form currently uses email delivery; CRM auto-sync is not enabled.</small></span><time>Pending</time></div>
-  </div>
-</section>
-
-<section id="buyers" class="page">
-  <div class="intro-row"><div class="intro"><h2>Buyer CRM</h2><p>ক্রেতার তথ্য, অনুসন্ধান, দরপ্রস্তাব ও পরবর্তী যোগাযোগের সময় সংরক্ষণ করুন।</p></div><button id="newLeadButton" class="primary">＋ নতুন ক্রেতা যোগ করুন</button></div>
-  <div class="toolbar"><input id="buyerSearch" type="search" placeholder="নাম, ইমেইল, কোম্পানি বা দেশ দিয়ে খুঁজুন"><select id="statusFilter"><option value="">সব অবস্থা</option><option value="new">New</option><option value="contacted">Contacted</option><option value="qualified">Qualified</option><option value="quotation_sent">Quotation sent</option><option value="sample_requested">Sample requested</option><option value="negotiation">Negotiation</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="on_hold">On hold</option><option value="lost">Lost</option></select></div>
-  <div id="buyerList" class="buyer-list"><div class="empty">ক্রেতার তথ্য লোড হচ্ছে…</div></div>
-</section>
-
-<section id="marketing" class="page"><div class="intro"><h2>Marketing drafts</h2><p>প্রচারমূলক খসড়া পর্যালোচনার জায়গা। লাইভ পোস্ট প্রকাশ এখনো সংযুক্ত নয়।</p></div><div class="cards">
-  <article class="card"><div class="card-head"><span class="eyebrow">FACEBOOK DRAFT</span><span class="pill">Draft only</span></div><h3>Apparel sourcing from Bangladesh</h3><p>Looking for a reliable apparel sourcing partner in Bangladesh? SORCEE coordinates with local factories for custom apparel orders. Minimum order quantity: 50 pieces. Send us your requirements to get started.</p></article>
-  <article class="card"><div class="card-head"><span class="eyebrow">INSTAGRAM DRAFT</span><span class="pill">Draft only</span></div><h3>Connecting global brands</h3><p>Connecting Global Brands with Trusted Local Factories. Apparel sourcing coordination from Bangladesh. MOQ: 50 pieces. Contact SORCEE for your next collection.</p></article>
-</div></section>
-
-<section id="email" class="page"><div class="intro"><h2>Email approvals</h2><p>ইমেইল পাঠানোর আগে প্রাপক, সম্মতি ও সম্পূর্ণ বার্তা যাচাই করা জরুরি।</p></div><div class="empty"><div>✉</div><h3>স্বয়ংক্রিয় ইমেইল অনুমোদন এখনো চালু নয়</h3><p>এই ড্যাশবোর্ড নিজে থেকে কাউকে ইমেইল পাঠায় না। অনুমতি ছাড়া কোনো ক্রেতাকে বার্তা পাঠানো হবে না।</p></div></section>
-
-<section id="reports" class="page"><div class="intro"><h2>Daily reports</h2><p>এজেন্টের সর্বশেষ রিপোর্ট ও কার্যক্রমের সারাংশ।</p></div><div class="report" id="reportBox"><div><span class="eyebrow">LATEST AVAILABLE REPORT</span><h3>রিপোর্ট খোঁজা হচ্ছে…</h3><p>এজেন্টের সর্বশেষ রিপোর্ট লোড হচ্ছে।</p></div><span class="tag">STATUS</span></div><p class="note" id="reportNote">রিপোর্ট না পাওয়া গেলে এখানে জানানো হবে।</p></section>
-
-<section id="settings" class="page"><div class="intro"><h2>Security & settings</h2><p>এই ব্যক্তিগত ড্যাশবোর্ডের নিরাপত্তা ব্যবস্থা।</p></div><div class="settings">
-  <div><span><b>Admin authentication</b><small>Supabase email/password sign-in</small></span><strong class="green">Enabled</strong></div>
-  <div><span><b>Database row security</b><small>Buyer information restricted to admin role</small></span><strong class="green">Enabled</strong></div>
-  <div><span><b>Public sign-up</b><small>এই ড্যাশবোর্ডে নতুন অ্যাকাউন্ট তৈরি করা যায় না</small></span><strong class="green">Disabled in UI</strong></div>
-  <div><span><b>Social publishing</b><small>Meta credentials and approval workflow not connected</small></span><strong class="amber">Not connected</strong></div>
-  <div><span><b>Website inquiry sync</b><small>Website quote form is not yet connected to CRM</small></span><strong class="amber">Pending</strong></div>
-</div><div class="warning"><b>নিরাপত্তা নির্দেশনা</b><p>প্রকাশ্য ওয়েবসাইটে কেবল Supabase publishable key ব্যবহার করা হয়েছে। কোনো service-role key বা database password ব্রাউজারে রাখা হয়নি। Buyer data RLS policy দিয়ে সুরক্ষিত।</p></div></section>
-
-<footer>© 2026 SORCEE · PRIVATE CONTROL CENTER <span>Buyer CRM · Admin only</span></footer>
-</main></div>
-
-<div id="leadModal" class="modal" hidden>
-<div class="modal-backdrop" data-close-modal></div>
-<div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="leadModalTitle">
-<div class="modal-head"><div><span class="eyebrow">BUYER RECORD</span><h2 id="leadModalTitle">নতুন ক্রেতা যোগ করুন</h2></div><button type="button" class="icon-close" data-close-modal aria-label="Close">×</button></div>
-<form id="leadForm" class="lead-form">
-<div class="form-grid">
-<label>ক্রেতার নাম *<input name="buyer_name" required maxlength="120"></label>
-<label>ইমেইল *<input name="buyer_email" type="email" required maxlength="254"></label>
-<label>কোম্পানি<input name="company_name" maxlength="160"></label>
-<label>দেশ<input name="country" maxlength="100"></label>
-<label>WhatsApp / ফোন<input name="whatsapp" maxlength="40"></label>
-<label>পণ্যের বিভাগ<select name="product_category"><option>Apparel</option><option>T-shirts</option><option>Polo Shirts</option><option>Shirts</option><option>Trousers & Pants</option><option>Sportswear</option><option>Casualwear</option><option>Footwear</option><option>Other</option></select></label>
-<label>পণ্যের নাম<input name="product_name" maxlength="160"></label>
-<label>পরিমাণ (পিস)<input name="quantity" type="number" min="1" step="1"></label>
-<label>লক্ষ্যমূল্য<input name="target_price" type="number" min="0" step="0.01"></label>
-<label>মুদ্রা<select name="currency"><option>USD</option><option>EUR</option><option>GBP</option><option>AED</option><option>BDT</option></select></label>
-<label>যোগাযোগের উৎস<select name="source"><option value="email">Email</option><option value="website">Website</option><option value="whatsapp">WhatsApp</option><option value="referral">Referral</option><option value="social_media">Social media</option><option value="other">Other</option></select></label>
-</div>
-<label>ক্রেতার বার্তা / প্রয়োজনীয়তা<textarea name="message" rows="4" maxlength="4000"></textarea></label>
-<div class="modal-actions"><button type="button" class="outline" data-close-modal>বাতিল</button><button class="primary" id="saveLeadButton" type="submit">ক্রেতার তথ্য সংরক্ষণ</button></div>
-<p id="leadFormStatus" class="form-status" role="status" aria-live="polite"></p>
-</form>
-</div></div>
-<div id="toast" role="status" aria-live="polite"></div>
-<script src="config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.94.1"></script>
-<script src="app.js"></script>
-</body></html>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#102c25"><title>SORCEE Control | AI Dashboard</title><link rel="stylesheet" href="style.css"></head>
+<body><div class="shell">
+<aside class="sidebar"><a class="brand" href="#"><span class="mark">S</span><span>SORCEE <small>CONTROL CENTER</small></span></a><div class="side-label">WORKSPACE</div><button class="nav active" data-page="overview">▦ <span>Overview</span></button><button class="nav" data-page="marketing">◈ <span>Marketing</span><b id="postCount">0</b></button><button class="nav" data-page="buyers">♧ <span>Buyers</span></button><button class="nav" data-page="email">✉ <span>Email approvals</span><b id="mailCount">0</b></button><button class="nav" data-page="reports">▤ <span>Reports</span></button><button class="nav" data-page="settings">⚙ <span>Settings</span></button><div class="side-bottom"><span class="status-dot"></span> Agent safe mode <small>DRY RUN · LIVE ACTIONS OFF</small></div></aside>
+<main class="main"><header class="top"><div><div class="eyebrow">SORCEE AI OPERATIONS</div><h1 id="pageTitle">Overview</h1></div><div class="topright"><span class="safe">● SAFE MODE</span><span class="avatar">A</span></div></header>
+<section id="overview" class="page show"><div class="welcome"><div><div class="eyebrow light">GOOD DAY · SORCEE TEAM</div><h2>Your business, one clear view.</h2><p>AI-এর তৈরি রিপোর্ট ও খসড়া দেখুন। এই সংস্করণে লাইভ অনুমোদন বা প্রকাশের সুবিধা নেই।</p></div><div class="welcome-icon">✦</div></div>
+<div class="stats"><article><span>AI STATUS</span><strong class="amber">Waiting for report</strong><small>পরবর্তী সফল এজেন্ট রান পর্যন্ত</small></article><article><span>PENDING APPROVALS</span><strong id="pendingTotal">0</strong><small>বাস্তব অনুমোদন ব্যবস্থা এখনো চালু নয়</small></article><article><span>BUYER LEADS</span><strong>0</strong><small>অনুমোদিত ক্রেতার তালিকা</small></article><article><span>MESSAGES SENT</span><strong>0</strong><small>আজ কোনো বার্তা পাঠানো হয়নি</small></article></div>
+<div class="section-head"><div><h3>Needs your attention</h3><p>অনুমোদনের আগে প্রতিটি খসড়া দেখে নিন।</p></div><span class="tag">NO LIVE APPROVALS</span></div><div id="attention" class="cards"></div>
+<div class="section-head"><div><h3>System activity</h3><p>সর্বশেষ জানা অবস্থা</p></div></div><div class="activity"><div><i class="ok">✓</i><span><b>Daily agent workflow</b><small>GitHub Actions-এ নির্ধারিত কাজ চালানোর ব্যবস্থা আছে</small></span><time>09:00 BDT</time></div><div><i class="warn">!</i><span><b>Social publishing</b><small>Meta credentials এখনো সংযুক্ত নয়</small></span><time>Not connected</time></div><div><i class="warn">!</i><span><b>Email delivery</b><small>SMTP ও অনুমোদিত lead configuration যাচাই বাকি</small></span><time>Not ready</time></div><div><i class="ok">✓</i><span><b>Website protection</b><small>এই ড্যাশবোর্ড মূল SORCEE সাইটের পেজ পরিবর্তন করে না</small></span><time>Separate folder</time></div></div></section>
+<section id="marketing" class="page"><div class="intro"><h2>Marketing approvals</h2><p>সোশ্যাল পোস্টের নমুনা খসড়া দেখুন। এই সংস্করণে অনুমোদন বা লাইভ Meta প্রকাশ চালু নেই।</p></div><div id="marketingList" class="cards"></div></section>
+<section id="buyers" class="page"><div class="intro"><h2>Buyer workspace</h2><p>ক্রেতার তথ্য, অনুসন্ধান ও ফলোআপের কাজ এক জায়গায়। অনুমতি ছাড়া কাউকে বার্তা পাঠানো হবে না।</p></div><div class="empty"><div>♧</div><h3>এখনো কোনো অনুমোদিত buyer lead নেই</h3><p>বাস্তব ক্রেতার তথ্য যোগ হলে এখানে দেখা যাবে। কেনা বা অনুমতিহীন তালিকা ব্যবহার করা হবে না।</p></div></section>
+<section id="email" class="page"><div class="intro"><h2>Email approvals</h2><p>ইমেইল পাঠানোর আগে প্রাপক ও সম্পূর্ণ বার্তা যাচাই করতে হবে।</p></div><div class="empty"><div>✉</div><h3>কোনো অনুমোদিত ইমেইল প্রস্তুত নেই</h3><p>SMTP সংযোগ এবং সম্মতিসহ ক্রেতার তথ্য যাচাই না হওয়া পর্যন্ত ইমেইল পাঠানো বন্ধ থাকবে।</p></div></section>
+<section id="reports" class="page"><div class="intro"><h2>Daily reports</h2><p>এজেন্টের রিপোর্টের সারাংশ। রিপোর্ট ফাইল GitHub repository-তে সংরক্ষিত হয়।</p></div><div class="report"><div><span class="eyebrow">LATEST AVAILABLE REPORT</span><h3>13 November 2026</h3><p>Gemini backup model দিয়ে কনটেন্ট তৈরি হয়েছে। Facebook ও Instagram সংযোগ নেই। অনুমোদিত ইমেইল পাঠানো হয়নি। LinkedIn-এর জন্য শুধু খসড়া তৈরি হয়েছে।</p><a href="../sorcee-agent/output/report-2026-11-13.md" target="_blank" rel="noopener">রিপোর্ট ফাইল খুলুন ↗</a></div><span class="tag">DRY RUN</span></div><p class="note">সর্বশেষ রিপোর্ট এজেন্টের পরবর্তী সফল রান থেকে স্বয়ংক্রিয়ভাবে আসবে।</p></section>
+<section id="settings" class="page"><div class="intro"><h2>Settings & safety</h2><p>বর্তমান নিরাপত্তা অবস্থা এবং সংযোগের প্রয়োজনীয়তা।</p></div><div class="settings"><div><span><b>Safe mode (DRY_RUN)</b><small>লাইভ পোস্ট ও ইমেইল বন্ধ রাখে</small></span><strong class="green">ON</strong></div><div><span><b>Gemini AI</b><small>GitHub Secret GEMINI_API_KEY ব্যবহার করে</small></span><strong class="green">Configured</strong></div><div><span><b>Facebook / Instagram</b><small>Meta Page ID, token এবং Instagram account ID প্রয়োজন</small></span><strong class="amber">Not connected</strong></div><div><span><b>Email</b><small>SMTP credentials এবং সম্মতিসহ অনুমোদিত lead প্রয়োজন</small></span><strong class="amber">Not connected</strong></div><div><span><b>Dashboard authentication</b><small>এই প্রাথমিক সংস্করণে সার্ভার-সুরক্ষিত লগইন নেই</small></span><strong class="red">Setup required</strong></div></div><div class="warning"><b>গুরুত্বপূর্ণ নিরাপত্তা সতর্কতা</b><p>এই সংস্করণটি এখনো প্রকাশ্য GitHub Pages-এ রাখা হলে যেকেউ URL পেলে দেখতে পারে। এখানে কোনো পাসওয়ার্ড, API key বা গোপন তথ্য লিখবেন না। ব্যক্তিগত ব্যবহারের আগে সার্ভার-সুরক্ষিত লগইন যোগ করতে হবে।</p></div></section>
+<footer>© 2026 SORCEE · CONTROL CENTER <span>Independent dashboard · Safe mode</span></footer></main></div><div id="toast" role="status" aria-live="polite"></div><script src="app.js"></script></body></html>

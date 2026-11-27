@@ -1,30 +1,21 @@
-# SORCEE Control Dashboard — Private CRM
+# SORCEE Control Dashboard — MVP
 
-A private admin workspace for SORCEE buyer inquiries, follow-ups, status changes, and internal notes.
+This is a separate dashboard folder, independent from the main SORCEE website pages.
 
-## Live URL
-https://sorcee.xyz/sorcee-control/
+## Preview URL
+After GitHub Pages publishes the repository, visit:
+https://farhanhossenfarhan5-ux.github.io/sorcee-website/sorcee-control/
 
-## Authentication and data security
-- Supabase email/password authentication; there is no public sign-up form.
-- The dashboard accepts only users whose server-managed `app_metadata.role` is `admin`.
-- Buyer tables have Row Level Security policies limited to authenticated admins.
-- Anonymous table access is revoked. The browser contains only the Supabase publishable key, never a service-role or secret key.
-- The current SORCEE admin account `sorcee.official@gmail.com` has the server-managed admin role.
-- Existing buyer tables currently contain no buyer records.
+## Important security status
+This first version is a static UI prototype. It does NOT have server-side authentication, database persistence, or real publish/send integrations. Do not treat it as private. Do not put API keys, passwords, tokens, or buyer personal data in it. GitHub Pages is public unless protected by an external access-control layer.
 
-## CRM features
-- View, search, and filter buyer inquiries.
-- Add a buyer record with company, country, contact, product, quantity, target price, source, and message.
-- Update lead status and next follow-up date.
-- Append internal notes and status-change activity.
-- Dashboard summary counts and recent buyer inquiries.
+Approval buttons only change the visible demo state in the browser. They do not publish posts or send email. Live operations remain disabled. The actual agent should keep DRY_RUN=true.
 
-## Important limitations
-- The public website quote form now submits to the CRM through the `sorcee-website-inquiry` Edge Function and also keeps the existing email notification path. The function validates inputs, enforces the 50-piece production minimum (sample-only requests are handled separately), applies per-IP and per-email rate limits, and stores only a one-way IP hash for rate limiting.
-- No automated email, WhatsApp, or social publishing is enabled from this dashboard.
-- The dashboard must not be treated as a customer-facing portal. It is for authorized SORCEE staff only.
-- The 360-degree product viewer is not enabled because the repository currently has only one image per product category. A genuine 360 view needs a multi-angle image sequence or a 3D model per product; the current single images must not be presented as 360-degree product photography.
+## Next production steps
+1. Deploy the dashboard behind server-side authentication (for example, a small backend with secure sessions).
+2. Store approval records server-side and require an authenticated approver.
+3. Connect Meta publishing and SMTP only through server-side secrets.
+4. Have GitHub Actions read only server-approved actions; preserve audit logs and a kill switch.
+5. Test in dry-run before enabling any live action.
 
-## Database security
-The SQL migrations are stored in `supabase/migrations/`: initial admin-only access policies and grants, followed by an RLS lookup optimization and supporting foreign-key indexes.
+The main SORCEE website files are not modified by this dashboard addition.
