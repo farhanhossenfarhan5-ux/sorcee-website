@@ -7,7 +7,7 @@ var s=L.get('lang')||'en';setLang(s==='bn'?'bn':'en');
 d.querySelectorAll('[data-set]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.set)})});
 var bg=d.querySelector('.burger'),nv=d.getElementById('nav');
 if(bg&&nv)bg.addEventListener('click',function(){var o=nv.classList.toggle('open');bg.setAttribute('aria-expanded',o)});
-var f=d.getElementById('quote');if(!f)return;
+var f=d.getElementById('quote');if(f){
 var q=new URLSearchParams(location.search).get('category');if(q)f.category.value=q;
 var st=d.getElementById('status');
 function msg(t,c){st.textContent=t;st.className='status '+(c||'')}
@@ -55,4 +55,22 @@ msg(bn()?'ইমেইল পাঠানো যায়নি: '+detail:'Could no
 msg(bn()?'সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা WhatsApp ব্যবহার করুন।':'A connection error occurred. Please try again or use WhatsApp.','err');
 }finally{button.disabled=false}
 });
+
+}
+/* SORCEE corporate reveal motion — gracefully falls back without observer support */
+var reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduceMotion){
+  var revealItems=d.querySelectorAll('.sec .wrap > h2,.cat,.why > div,.steps > li,.two > div');
+  if('IntersectionObserver' in window){
+    var revealObserver=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    },{root:null,rootMargin:'0px 0px -8% 0px',threshold:.08});
+    revealItems.forEach(function(el){el.classList.add('sorcee-reveal');revealObserver.observe(el)});
+  }
+}
 })();
