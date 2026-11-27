@@ -1,5 +1,5 @@
 {
-  "date": "2026-11-26",
+  "date": "2026-11-27",
   "mode": "DRY RUN",
   "ai_status": "Gemini generated content using backup model gemini-3.5-flash-lite",
   "facebook_status": "skipped: Facebook credentials not configured",
@@ -8,7 +8,7 @@
   "email_status": "no approved leads",
   "linkedin_status": "draft created; no automated connection requests",
   "website_files_changed": false,
-  "social_draft": "Struggling to find reliable apparel production in Bangladesh? SORCEE bridges the gap between global brands and trusted local manufacturing partners. As your on-the-ground sourcing coordinator, we manage the entire production process from start to finish—with an accessible MOQ of just 50 pieces. \n\nLet us simplify your supply chain and connect your brand with the right production floor for your next collection. \n\nReady to bring your designs to life? Request a custom quote today: \nhttps://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html\n\n#ApparelSourcing #BangladeshManufacturing #B2BFashion #FashionProduction #Sorcee",
-  "report_file": "../sorcee-agent/output/report-2026-11-26.md",
-  "updated_at_utc": "2026-11-26T12:04:17.347140+00:00"
+  "social_draft": "Finding the right manufacturing partner in Bangladesh doesn't have to be complicated. SORCEE connects global apparel brands with trusted local factories, expertly coordinating your sourcing and production every step of the way. \n\nWhether you're starting small with an accessible 50-piece MOQ or scaling up production, we streamline the process so you can focus on building your brand. Let us help you navigate Bangladesh’s thriving garment sector with confidence and clarity.\n\nReady to bring your next collection to life? Request a custom quote today: https://farhanhossenfarhan5-ux.github.io/sorcee-website/request-a-quote.html\n\n#ApparelSourcing #MadeInBangladesh #B2BFashion #GarmentManufacturing #SORCEE",
+  "report_file": "../sorcee-agent/output/report-2026-11-27.md",
+  "updated_at_utc": "2026-11-27T11:55:33.837393+00:00"
 }
