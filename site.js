@@ -41,19 +41,41 @@ payload._honey=f._honey.value;
 if(files&&files.files&&files.files.length){
 payload.reference_files_selected=Array.from(files.files).map(function(file){return file.name}).join(', ');
 }
+async function sendEmail(){
 try{
 var response=await fetch(C.emailEndpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
 var result=await response.json();
-if(result.success==='true'||result.success===true){
-msg(bn()?'ধন্যবাদ! আপনার ইনকোয়ারি সরাসরি SORCEE-তে পাঠানো হয়েছে।':'Thank you! Your inquiry has been sent directly to SORCEE.','ok');
+return {ok:response.ok&&(result.success==='true'||result.success===true),message:result.message||'Email service did not accept the inquiry.'};
+}catch(error){return {ok:false,message:'Email connection failed.'}}
+}
+async function saveToCrm(){
+if(!C.inquiryEndpoint||!C.publishableKey)return {ok:false,message:'CRM endpoint is not configured.'};
+try{
+var response=await fetch(C.inquiryEndpoint,{method:'POST',headers:{'Content-Type':'application/json','apikey':C.publishableKey},body:JSON.stringify(payload)});
+var result=await response.json();
+return {ok:response.ok&&result.success===true,number:result.inquiry_number||null,message:result.message||'CRM could not save the inquiry.'};
+}catch(error){return {ok:false,message:'CRM connection failed.'}}
+}
+try{
+var results=await Promise.all([sendEmail(),saveToCrm()]);
+var emailResult=results[0],crmResult=results[1];
+if(emailResult.ok&&crmResult.ok){
+msg(bn()?'ধন্যবাদ! আপনার ইনকোয়ারি SORCEE-তে পাঠানো ও CRM-এ সংরক্ষণ করা হয়েছে।':'Thank you! Your inquiry was emailed to SORCEE and saved in the buyer CRM.'+(crmResult.number?' Inquiry #'+crmResult.number:''),'ok');
+f.reset();
+}else if(emailResult.ok&&!crmResult.ok){
+msg(bn()?'ইমেইল পাঠানো হয়েছে, তবে CRM-এ সংরক্ষণ হয়নি। অনুগ্রহ করে আবার পাঠাবেন না; SORCEE টিম এটি হাতে যোগ করবে।':'Your email was sent, but CRM sync failed. Please do not submit again; the SORCEE team will add it manually.','err');
+button.disabled=true;
+}else if(!emailResult.ok&&crmResult.ok){
+msg(bn()?'আপনার ইনকোয়ারি CRM-এ সংরক্ষিত হয়েছে, কিন্তু ইমেইল নোটিফিকেশন পাঠানো যায়নি।':'Your inquiry was saved in the CRM, but the email notification could not be sent.'+(crmResult.number?' Inquiry #'+crmResult.number:''),'ok');
 f.reset();
 }else{
-var detail=result.message||'The email service did not accept the inquiry.';
-msg(bn()?'ইমেইল পাঠানো যায়নি: '+detail:'Could not send the inquiry: '+detail,'err');
+msg(bn()?'ইনকোয়ারি পাঠানো যায়নি। আবার চেষ্টা করুন অথবা WhatsApp ব্যবহার করুন।':'The inquiry could not be submitted. Please try again or use WhatsApp.','err');
 }
 }catch(error){
 msg(bn()?'সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন অথবা WhatsApp ব্যবহার করুন।':'A connection error occurred. Please try again or use WhatsApp.','err');
-}finally{button.disabled=false}
+}finally{
+if(!button.disabled)button.disabled=false;
+}
 });
 
 }
